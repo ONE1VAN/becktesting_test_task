@@ -11,4 +11,4 @@ if __name__ == "__main__":
 
     loader.download_data()
 
-    print(loader.load_parquet('btc_1m_20250201.parquet').head())
+    print(loader.load_parquet('btc_1m_20250201.parquet').tail())
