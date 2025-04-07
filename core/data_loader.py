@@ -91,9 +91,14 @@ class DataLoader:
 
             if all_dfs:
                 combined_df = pd.concat(all_dfs)  
-                combined_df.to_parquet(combined_path, compression='snappy')
-                print(f"\nCombined dataset saved: {combined_path}")
+                ohlcv_columns = ['Open', 'High', 'Low', 'Close', 'Volume', 'symbol']
+                if not all(col in combined_df.columns for col in ohlcv_columns):
+                    print(f"Warning: Not all expected OHLCV columns found. Available columns: {combined_df.columns}")
+                combined_df = combined_df[ohlcv_columns]
 
+                combined_df.to_parquet(combined_path, compression='snappy')
+                print(f"\nCombined OHLCV dataset saved: {combined_path}")
+                
     def load_parquet(self, filename: str) -> pd.DataFrame:
         """Loads data from a .parquet."""
         if not filename.endswith('.parquet'):
